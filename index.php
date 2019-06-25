@@ -1,6 +1,6 @@
 <?php
 
-error_reporting(0);
+date_default_timezone_set("Asia/Bangkok");
 
 require_once 'vendor/autoload.php';
 
@@ -11,13 +11,22 @@ $channelToken = 'BvYt6WvOyaSipaB5z0q6aMSNJlwhgZC/deUtkcbPH7k4t3PzIaquKP9/SoVFdlb
 $httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient( $channelToken );
 $bot = new \LINE\LINEBot( $httpClient, [ 'channelSecret' => $channelSecret ] );
 
-$logger = new \Monolog\Logger('w18oonChatBot');
-$logger->pushHandler(new \Monolog\Handler\StreamHandler('php://stderr', \Monolog\Logger::DEBUG));
+$logger = new \Monolog\Logger( 'w18oonChatBot' );
+$logger->pushProcessor( new \Monolog\Processor\UidProcessor() );
+$logger->pushHandler( new \Monolog\Handler\StreamHandler( 'logs/app.log' , \Monolog\Logger::DEBUG ) );
 
 $signature = $_SERVER['HTTP_' . \LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE];
 
-// $events = $bot->parseEventRequest(file_get_contents('php://input'), $signature);
-
-$logger->info('Postback message has come');
+try {
+	$events = $bot->parseEventRequest(file_get_contents('php://input'), $signature);
+} catch( \LINE\LINEBot\Exception\InvalidSignatureException $e ) {
+    $logger->err( 'parseEventRequest failed. InvalidSignatureException => '.var_export( $e , true ) );
+} catch(\LINE\LINEBot\Exception\UnknownEventTypeException $e) {
+    $logger->err( 'parseEventRequest failed. UnknownEventTypeException => '.var_export( $e , true ) );
+} catch(\LINE\LINEBot\Exception\UnknownMessageTypeException $e) {
+    $logger->err( 'parseEventRequest failed. UnknownMessageTypeException => '.var_export( $e , true ) );
+} catch(\LINE\LINEBot\Exception\InvalidEventRequestException $e) {
+    $logger->err( 'parseEventRequest failed. InvalidEventRequestException => '.var_export( $e , true ) );
+}
 
 ?>
