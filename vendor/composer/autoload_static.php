@@ -7,6 +7,14 @@ namespace Composer\Autoload;
 class ComposerStaticInit8e8af291420fe11d5cd85784bd328e72
 {
     public static $prefixLengthsPsr4 = array (
+        'P' => 
+        array (
+            'Psr\\Log\\' => 8,
+        ),
+        'M' => 
+        array (
+            'Monolog\\' => 8,
+        ),
         'L' => 
         array (
             'LINE\\' => 5,
@@ -14,6 +22,14 @@ class ComposerStaticInit8e8af291420fe11d5cd85784bd328e72
     );
 
     public static $prefixDirsPsr4 = array (
+        'Psr\\Log\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
+        ),
+        'Monolog\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
+        ),
         'LINE\\' => 
         array (
             0 => __DIR__ . '/..' . '/linecorp/line-bot-sdk/src',
