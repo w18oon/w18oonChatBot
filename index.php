@@ -17,6 +17,7 @@ $logger->pushHandler( new \Monolog\Handler\StreamHandler( 'logs/app.log' , \Mono
 
 $signature = $_SERVER['HTTP_' . \LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE];
 
+// get request
 try {
 	$events = $bot->parseEventRequest(file_get_contents('php://input'), $signature);
 } catch ( \LINE\LINEBot\Exception\InvalidSignatureException $e ) {
@@ -29,8 +30,11 @@ foreach ( $events as $event ) {
     // get text from sender
     $replyText = $event->getText();
     $logger->info('Reply text: ' . $replyText);
+
     // reply with same text
     $response = $bot->replyText($event->getReplyToken(), $replyText);
+
+    //logging reponse
     $logger->info($response->getHTTPStatus() . ': ' . $response->getRawBody());
 
     // $outputText = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder( 'text message' );
