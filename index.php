@@ -1,74 +1,18 @@
 <?php
+    require_once 'vendor/autoload.php';
 
-/*Get Data From POST Http Request*/
-$datas = file_get_contents('php://input');
-    
-/*Decode Json From LINE Data Body*/
-$deCode = json_decode($datas,true);
+    $logger = new \Monolog\Logger('w18oonChatBot');
+    $logger->pushProcessor(new \Monolog\Processor\UidProcessor());
+    $logger->pushHandler(new \Monolog\Handler\StreamHandler('logs/app.log', \Monolog\Logger::DEBUG));
 
-$replyToken = $deCode['events'][0]['replyToken'];
+    print_r($logger);
+    // $logger->pushProcessor(new \Monolog\Processor\UidProcessor());
+    // $logger->pushHandler(new \Monolog\Handler\StreamHandler('logs/app.log', \Monolog\Logger::DEBUG));
 
-$messages = [];
-$messages['replyToken'] = $replyToken;
-$messages['messages'][0] = getFormatTextMessage("...");
-// $messages['messages'][0] = $deCode['events'][0]['message']['text'];
+    // use Monolog\Logger;
+    // use Monolog\Handler\StreamHandler;
+    // use Monolog\Handler\FirePHPHandler;
 
-$encodeJson = json_encode($messages);
-
-$LINEDatas['url'] = "https://api.line.me/v2/bot/message/reply";
-$LINEDatas['token'] = "BvYt6WvOyaSipaB5z0q6aMSNJlwhgZC/deUtkcbPH7k4t3PzIaquKP9/SoVFdlbjiiJO0nyrXhVHoyNt2Zfst1RQM6XghyY2ZZFmfzqj6eSM6Q84Pd0EnkGGvbrZMxjQ41gkIylbuuFghg64QCiU3gdB04t89/1O/w1cDnyilFU=";
-
-$results = sentMessage($encodeJson,$LINEDatas);
-
-/*Return HTTP Request 200*/
-http_response_code(200);
-
-function getFormatTextMessage($text)
-{
-    $datas = [];
-    $datas['type'] = 'text';
-    $datas['text'] = $text;
-
-    return $datas;
-}
-
-function sentMessage($encodeJson,$datas)
-{
-    $datasReturn = [];
-    $curl = curl_init();
-    curl_setopt_array($curl, array(
-        CURLOPT_URL => $datas['url'],
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_ENCODING => "",
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 30,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => "POST",
-        CURLOPT_POSTFIELDS => $encodeJson,
-        CURLOPT_HTTPHEADER => array(
-            "authorization: Bearer ".$datas['token'],
-            "cache-control: no-cache",
-            "content-type: application/json; charset=UTF-8",
-        ),
-    ));
-
-    $response = curl_exec($curl);
-    $err = curl_error($curl);
-
-    curl_close($curl);
-
-    if ($err) {
-        $datasReturn['result'] = 'E';
-        $datasReturn['message'] = $err;
-    } else {
-        if($response == "{}"){
-        $datasReturn['result'] = 'S';
-        $datasReturn['message'] = 'Success';
-        }else{
-        $datasReturn['result'] = 'E';
-        $datasReturn['message'] = $response;
-        }
-    }
-
-    return $datasReturn;
-}
+    // $logger = new Logger('w18oonChatBot');
+    // $logger->pushHandler(new StreamHandler('php://stderr', Logger::DEBUG));
+?>
