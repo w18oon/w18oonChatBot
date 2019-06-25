@@ -19,3 +19,5 @@ foreach ($events as $event) {
 		$response = $bot->replyMessage($event->getReplyToken(), $outputText);
 	}
 }
+
+http_response_code(200);
