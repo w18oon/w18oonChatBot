@@ -1,10 +1,5 @@
 <?php
 
-require_once 'vendor/autoload.php';
-
-$channelAccessToken = 'FHSGmy/OcieflUXOhLmeKbUWEJl9/47QdZjAg7Sybl2sVnDsSYlERzQ3jU557TZviiJO0nyrXhVHoyNt2Zfst1RQM6XghyY2ZZFmfzqj6eTVXitYhcGj9ndij03yh3wBZqW5rNcYpVlQhN9oOlgZtAdB04t89/1O/w1cDnyilFU=';
-$channelSecret = '68cf1b782ae45b6b0847ce8b9c0ae331';
-
 /*Get Data From POST Http Request*/
 $datas = file_get_contents('php://input');
     
