@@ -6,8 +6,6 @@ $datas = file_get_contents('php://input');
 /*Decode Json From LINE Data Body*/
 $deCode = json_decode($datas,true);
 
-file_put_contents('log.txt', file_get_contents('php://input') . PHP_EOL, FILE_APPEND);
-
 $replyToken = $deCode['events'][0]['replyToken'];
 
 $messages = [];
@@ -18,9 +16,9 @@ $messages['messages'][0] = getFormatTextMessage("...");
 $encodeJson = json_encode($messages);
 
 $LINEDatas['url'] = "https://api.line.me/v2/bot/message/reply";
-$LINEDatas['token'] = "FHSGmy/OcieflUXOhLmeKbUWEJl9/47QdZjAg7Sybl2sVnDsSYlERzQ3jU557TZviiJO0nyrXhVHoyNt2Zfst1RQM6XghyY2ZZFmfzqj6eTVXitYhcGj9ndij03yh3wBZqW5rNcYpVlQhN9oOlgZtAdB04t89/1O/w1cDnyilFU=";
+$LINEDatas['token'] = "BvYt6WvOyaSipaB5z0q6aMSNJlwhgZC/deUtkcbPH7k4t3PzIaquKP9/SoVFdlbjiiJO0nyrXhVHoyNt2Zfst1RQM6XghyY2ZZFmfzqj6eSM6Q84Pd0EnkGGvbrZMxjQ41gkIylbuuFghg64QCiU3gdB04t89/1O/w1cDnyilFU=";
 
-  $results = sentMessage($encodeJson,$LINEDatas);
+$results = sentMessage($encodeJson,$LINEDatas);
 
 /*Return HTTP Request 200*/
 http_response_code(200);
@@ -39,19 +37,19 @@ function sentMessage($encodeJson,$datas)
     $datasReturn = [];
     $curl = curl_init();
     curl_setopt_array($curl, array(
-      CURLOPT_URL => $datas['url'],
-      CURLOPT_RETURNTRANSFER => true,
-      CURLOPT_ENCODING => "",
-      CURLOPT_MAXREDIRS => 10,
-      CURLOPT_TIMEOUT => 30,
-      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-      CURLOPT_CUSTOMREQUEST => "POST",
-      CURLOPT_POSTFIELDS => $encodeJson,
-      CURLOPT_HTTPHEADER => array(
-        "authorization: Bearer ".$datas['token'],
-        "cache-control: no-cache",
-        "content-type: application/json; charset=UTF-8",
-      ),
+        CURLOPT_URL => $datas['url'],
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => $encodeJson,
+        CURLOPT_HTTPHEADER => array(
+            "authorization: Bearer ".$datas['token'],
+            "cache-control: no-cache",
+            "content-type: application/json; charset=UTF-8",
+        ),
     ));
 
     $response = curl_exec($curl);
